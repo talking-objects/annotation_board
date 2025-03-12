@@ -20,12 +20,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = os.getenv("SECRET_KEY")
-SECRET_KEY = "django-insecure-eg3#5x-3uu@-_%5=7qp5bzs_&%dsm-&oq&7y5b+5xqdx2^@dxu"
+SECRET_KEY = os.getenv("SECRET_KEY")
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = bool(os.getenv("DEBUG", "0")) == "1"
-DEBUG = True
+DEBUG = bool(os.getenv("DEBUG", "0")) == "1"
 
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
@@ -224,14 +223,14 @@ CSRF_TRUSTED_ORIGINS = [
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 7  # 7 days in seconds
 
 SESSION_COOKIE_SECURE = True
-SESSION_COOKIE_HTTPONLY = DEBUG == False
+SESSION_COOKIE_HTTPONLY = DEBUG == True
 if DEBUG == False:
     SESSION_COOKIE_DOMAIN = ".talkingobjectsarchive.org"
 
 # CSRF
 CORS_ALLOW_CREDENTIALS = True  # Allow credentials
 CSRF_COOKIE_SECURE = True
-CSRF_COOKIE_HTTPONLY = DEBUG == False
+CSRF_COOKIE_HTTPONLY = DEBUG == True
 if DEBUG == False:
     CSRF_COOKIE_DOMAIN = ".talkingobjectsarchive.org"
 

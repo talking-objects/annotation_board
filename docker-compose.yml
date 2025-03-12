@@ -10,8 +10,6 @@ services:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-    ports:
-      - "5432:5432"
     networks:
       - shared_network
 
@@ -21,8 +19,6 @@ services:
       dockerfile: Dockerfile.prod
     restart: always
     command: gunicorn config.wsgi:application --bind 0.0.0.0:8000
-    # ports:
-    #   - "8000:8000"
     expose:
       - "8000"
     environment:
@@ -47,8 +43,6 @@ services:
     build: 
       context: ./eva_annotation_board_client
       dockerfile: Dockerfile
-    # ports:
-    #   - "3000:3000"
     restart: always
     expose:
       - "3000"
