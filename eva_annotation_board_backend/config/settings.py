@@ -179,29 +179,11 @@ REST_FRAMEWORK = {
     # "PAGE_SIZE": 10,
 }
 
-# CORS_ALLOW_METHODS = [
-#     "GET",
-#     "POST",
-#     "PUT",
-#     "DELETE",
-#     "OPTIONS",  # ✅ OPTIONS 요청 허용
-# ]
-# CORS_ALLOW_HEADERS = [
-#     "accept",
-#     "accept-encoding",
-#     "authorization",
-#     "content-type",
-#     "dnt",
-#     "origin",
-#     "user-agent",
-#     "x-csrftoken",
-#     "x-requested-with",
-# ]
 
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-# ✅ CORS 설정 (Next.js에서 요청을 받을 수 있도록)
+
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",
     "http://localhost:3000",  # Next.js development server address
@@ -234,11 +216,6 @@ CSRF_COOKIE_HTTPONLY = DEBUG == True
 if DEBUG == False:
     CSRF_COOKIE_DOMAIN = ".talkingobjectsarchive.org"
 
-# SESSION_COOKIE_DOMAIN = None  # ✅ 자동으로 현재 도메인에 맞게 설정됨
-# SESSION_COOKIE_SAMESITE = "Lax"  # ✅ 크로스 도메인에서도 세션 유지
 
-# SESSION_COOKIE_HTTPONLY = False  # JavaScript에서 접근 불가
-# SESSION_COOKIE_SAMESITE = "Lax"  # 크로스 사이트 요청 시 세션 유지
-
-# 추가: WhiteNoise 설정
+# WhiteNoise
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
