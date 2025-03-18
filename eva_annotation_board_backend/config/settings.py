@@ -212,7 +212,7 @@ if DEBUG == False:
 # CSRF
 CORS_ALLOW_CREDENTIALS = True  # Allow credentials
 CSRF_COOKIE_SECURE = True
-CSRF_COOKIE_HTTPONLY = DEBUG == True
+CSRF_COOKIE_HTTPONLY = False
 if DEBUG == False:
     CSRF_COOKIE_DOMAIN = ".talkingobjectsarchive.org"
 
