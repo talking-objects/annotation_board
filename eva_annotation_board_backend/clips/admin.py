@@ -4,6 +4,6 @@ from .models import Clip
 # Register your models here.
 
 
-@admin.register(Clip)
+# @admin.register(Clip)
 class ClipAdmin(admin.ModelAdmin):
     pass

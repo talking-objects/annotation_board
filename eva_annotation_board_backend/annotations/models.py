@@ -25,7 +25,7 @@ class BaseAnnotation(CommonModel):
     end = models.DecimalField(max_digits=10, decimal_places=3, default=0)
 
     class Meta:
-        abstract = True  # ✅ 부모 클래스이므로 직접 테이블을 만들지 않음
+        abstract = True
 
     def __str__(self):
         return f"Video Title: {self.annotation_wrapper.video.title}"
@@ -97,7 +97,7 @@ class Reference(BaseAnnotation):
 
 def validate_value_tag(value):
     try:
-        # 기본 구조 검증
+
         if not isinstance(value, dict) or "value" not in value:
             raise ValidationError("Invalid format: must contain 'value' object")
 
@@ -139,7 +139,7 @@ class Tag(BaseAnnotation):
 
 def validate_value_narration(value):
     try:
-        # 기본 구조 검증
+
         if not isinstance(value, dict) or "value" not in value:
             raise ValidationError("Invalid format: must contain 'value' object")
 
@@ -179,6 +179,70 @@ class Narration(BaseAnnotation):
             Clip.objects.create(narration_data=self)
 
 
+def validate_value_category(value):
+    try:
+
+        if not isinstance(value, dict) or "value" not in value:
+            raise ValidationError("Invalid format: must contain 'value' object")
+
+        value_data = value["value"]
+
+        required_keys = ["color", "slug", "value"]
+        for key in required_keys:
+            if key not in value_data:
+                raise ValidationError(f"Missing required key: '{key}'")
+
+        if not value_data["color"] or not isinstance(value_data["color"], str):
+            raise ValidationError("color must be a string")
+
+        if not value_data["slug"] or not isinstance(value_data["slug"], str):
+            raise ValidationError("slug must be a string")
+
+        if not value_data["value"] or not isinstance(value_data["value"], str):
+            raise ValidationError("value must be a string")
+
+        category_list = [
+            {
+                "slug": "identity",
+                # "value": "Identity",
+                "color": "#9E21E8",
+            },
+            {
+                "slug": "knowledge",
+                # "value": "Knowledge",
+                "color": "#8BA5F8",
+            },
+            {
+                "slug": "artistic_reflection",
+                # "value": "Artistic Reflection",
+                "color": "#691220",
+            },
+            {
+                "slug": "restitution",
+                # "value": "Restitution",
+                "color": "#EC6735",
+            },
+            {
+                "slug": "memory",
+                # "value": "Memory and the Imaginary",
+                "color": "#F1A73D",
+            },
+        ]
+
+        if {
+            "slug": value_data["slug"],
+            # "value": value_data["value"],
+            "color": value_data["color"],
+        } not in category_list:
+            raise ValidationError(
+                "value must be one of the following: "
+                + ", ".join([category for category in category_list])
+            )
+
+    except (KeyError, TypeError):
+        raise ValidationError("Invalid JSON structure")
+
+
 class Category(BaseAnnotation):
     annotation_wrapper = models.ForeignKey(
         "annotations.AnnotationWrapper",
@@ -189,10 +253,11 @@ class Category(BaseAnnotation):
         help_text=mark_safe(
             dedent(
                 """
-                The value of Category data is not editable.
+                Read a documentation for more information.
                 """
             )
-        )
+        ),
+        validators=[validate_value_category],
     )
 
     type = models.CharField(max_length=100, default="categoryLayer", editable=False)
@@ -207,7 +272,6 @@ class Category(BaseAnnotation):
 
 def validate_value_event(value):
     try:
-        # 기본 구조 검증
         if not isinstance(value, dict) or "value" not in value:
             raise ValidationError("Invalid format: must contain 'value' object")
 
@@ -225,7 +289,6 @@ def validate_value_event(value):
         if not value_data["endDate"] or not isinstance(value_data["endDate"], str):
             raise ValidationError("endDate must be a non-empty string")
 
-        # Validate date format
         try:
             from datetime import datetime
 
@@ -269,7 +332,6 @@ class Event(BaseAnnotation):
 
 def validate_value_place(value):
     try:
-        # 기본 구조 검증
         if not isinstance(value, dict) or "value" not in value:
             raise ValidationError("Invalid format: must contain 'value' object")
 
@@ -335,7 +397,6 @@ class Place(BaseAnnotation):
 
 def validate_value_data(value):
     try:
-        # 기본 구조 검증
         if not isinstance(value, dict) or "value" not in value:
             raise ValidationError("Invalid format: must contain 'value' object")
 
